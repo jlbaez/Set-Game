@@ -25,16 +25,12 @@ class SetCard
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
+        if (this == o) return false;
         if (o == null || getClass() != o.getClass()) return false;
 
         SetCard setCard = (SetCard) o;
 
-        if (color != setCard.color) return false;
-        if (symbol != setCard.symbol) return false;
-        if (shading != setCard.shading) return false;
-        return number == setCard.number;
-
+        return shading == setCard.shading && number == setCard.number && symbol == setCard.symbol && color == setCard.color;
     }
 
     @Override
