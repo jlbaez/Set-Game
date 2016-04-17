@@ -49,13 +49,13 @@ class SetSolver
         for(ArrayList<SetCard> foundSet : allSets)
         {
             int foundCard = 0;
-            for(SetCard card : foundSet)
+            for(SetCard card : set)
             {
-                if(set.contains(card))
+                if(foundSet.contains(card))
                     foundCard++;
             }
 
-            if(foundCard > 0)
+            if(foundCard == 3)
                 return true;
         }
 
