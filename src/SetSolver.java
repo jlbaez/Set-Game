@@ -33,7 +33,7 @@ class SetSolver
                     ArrayList<SetCard> list = new ArrayList<>(inputSets);
                     list.add(card);
 
-                    if(list.size() == 3 && !alreadyInSet(list, allSets))
+                    if(list.size() == 3 && !alreadyInAllSets(list, allSets))
                     {
                         allSets.add(list);
                         return;
@@ -44,7 +44,7 @@ class SetSolver
         }
     }
 
-    private boolean alreadyInSet(ArrayList<SetCard> set, ArrayList<ArrayList<SetCard>> allSets)
+    private boolean alreadyInAllSets(ArrayList<SetCard> set, ArrayList<ArrayList<SetCard>> allSets)
     {
         for(ArrayList<SetCard> foundSet : allSets)
         {
