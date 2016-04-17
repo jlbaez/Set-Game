@@ -55,7 +55,7 @@ class SetSolver
                     foundCard++;
             }
 
-            if(foundCard == 3)
+            if(foundCard > 0)
                 return true;
         }
 
