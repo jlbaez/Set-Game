@@ -68,16 +68,19 @@ public class SetSolver
 
     private boolean alreadyInAllSets(ArrayList<SetCard> set)
     {
-        int i=0;
         for(ArrayList<SetCard> foundSet : allSets)
         {
-            if(foundSet.containsAll(set)) {
-                i++;
-            }
-        }
+            int i=0;
 
-        if(i==3)
-            return true;
+            for(SetCard s : foundSet)
+            {
+                if(set.contains(s))
+                    i++;
+            }
+
+            if(i==3)
+                return true;
+        }
 
         return false;
     }
