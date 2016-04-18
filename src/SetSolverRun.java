@@ -9,7 +9,7 @@ public class SetSolverRun {
     public static void main(String[] args)
     {
         ArrayList<SetCard> input = new ArrayList<>();
-
+        SetSolver s = new SetSolver();
         HashMap<String, String[]> dimensions = new HashMap<>();
 
         dimensions.put("color", new String[]{"red", "green", "purple"});
@@ -80,6 +80,7 @@ public class SetSolverRun {
         s9.addDimension(new String[]{"shading", "outlined"});
         s9.addDimension(new String[]{"number", "three"});
 
+
         input.add(s1);
         input.add(s2);
         input.add(s3);
@@ -89,18 +90,12 @@ public class SetSolverRun {
         input.add(s7);
         input.add(s8);
         input.add(s9);
-        SetSolver s = new SetSolver();
 
         ArrayList<ArrayList<SetCard>> allSet = s.getAllPossibleSets(input, dimensions);
 
-        System.out.println("size " + allSet.size());
-        System.out.println();
         for(ArrayList<SetCard> set : allSet)
         {
-            for(SetCard card : set)
-            {
-                System.out.println(card + " ");
-            }
+            set.forEach(System.out::println);
             System.out.println();
         }
     }

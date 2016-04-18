@@ -29,7 +29,6 @@ public class SetSolver
 
     private ArrayList<ArrayList<SetCard>> getAllPossibleSets(ArrayList<SetCard> cards)
     {
-        //System.out.println(cards);
         allSets = new ArrayList<>();
         for(SetCard card : cards)
         {
@@ -53,20 +52,6 @@ public class SetSolver
 
                     if(list.size() == 3)
                     {
-                        /*
-                        System.out.println();
-                        for(ArrayList<SetCard> set : allSets)
-                        {
-                            for(SetCard card2 : set)
-                            {
-                                System.out.println(card2 + " ");
-                            }
-                            System.out.println();
-                        }
-
-                        System.out.println("set " + list);
-                        System.out.println("alreadinsert " + alreadyInAllSets(list));
-                        */
                         if(!alreadyInAllSets(list))
                         {
                             allSets.add(list);
@@ -83,21 +68,26 @@ public class SetSolver
 
     private boolean alreadyInAllSets(ArrayList<SetCard> set)
     {
+        int i=0;
         for(ArrayList<SetCard> foundSet : allSets)
         {
-            //System.out.println(foundSet.containsAll(set));
-            return foundSet.containsAll(set);
+            if(foundSet.containsAll(set)) {
+                i++;
+            }
         }
+
+        if(i==3)
+            return true;
 
         return false;
     }
 
-    private boolean shouldBeAddedToSet(ArrayList<SetCard> cards, SetCard newCard)
+    public boolean shouldBeAddedToSet(ArrayList<SetCard> cards, SetCard newCard)
     {
         HashMap<String, Boolean> properties = new HashMap<>();
 
         for(Map.Entry<String, String> e : newCard.dimensionValue.entrySet())
-            properties.put(e.getValue(), false);
+            properties.put(e.getKey(), false);
 
         SetCard previousCard = null;
 
@@ -109,7 +99,7 @@ public class SetSolver
                     previousCard = card;
                 else
                 {
-                    for(Map.Entry<String, String> e : newCard.dimensionValue.entrySet())
+                    for(Map.Entry<String, String> e : previousCard.dimensionValue.entrySet())
                     {
                         properties.put(e.getKey(), card.dimensionValue.get(e.getKey()).equals(e.getValue()));
                     }
@@ -118,8 +108,12 @@ public class SetSolver
 
             for(Map.Entry<String, String> e : newCard.dimensionValue.entrySet())
             {
-                if(properties.get(e.getKey()) && (!cards.get(0).equals(e.getValue()) || !cards.get(1).equals(e.getValue()))
-                        && !properties.get(e.getKey()) && (cards.get(0).equals(e.getValue()) || cards.get(1).equals(e.getKey())))
+                boolean b1 = cards.get(0).dimensionValue.get(e.getKey()).equals(e.getValue());
+                boolean b2 = cards.get(1).dimensionValue.get(e.getKey()).equals(e.getValue());
+
+                if(properties.get(e.getKey()) && (!b1 || !b2))
+                    return false;
+                if(!properties.get(e.getKey()) && (b1 || b2))
                     return false;
             }
         }
