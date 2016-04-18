@@ -1,17 +1,35 @@
-import java.util.Arrays;
+import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
- * SetGame
- * Created by jose on 4/16/16.
- * Last edited on 4/16/16
+ * Created by jose on 4/17/16.
+ * Last edited on 4/17/16
  */
-class SetSolver
+public class SetSolver
 {
     private ArrayList<ArrayList<SetCard>> allSets;
+    private HashMap<String, String[]> dimensions;
 
-    ArrayList<ArrayList<SetCard>> getAllPossibleSets(ArrayList<SetCard> cards)
+    class ImproperDimensionValueException extends Exception
     {
+        ImproperDimensionValueException(String message)
+        {
+            super(message);
+        }
+    }
+
+    ArrayList<ArrayList<SetCard>> getAllPossibleSets(ArrayList<SetCard> cards, HashMap<String, String[]> dimensions)
+    {
+        this.dimensions = dimensions;
+        return getAllPossibleSets(cards);
+    }
+
+    private ArrayList<ArrayList<SetCard>> getAllPossibleSets(ArrayList<SetCard> cards)
+    {
+        //System.out.println(cards);
         allSets = new ArrayList<>();
         for(SetCard card : cards)
         {
@@ -33,12 +51,30 @@ class SetSolver
                     ArrayList<SetCard> list = new ArrayList<>(inputSets);
                     list.add(card);
 
-                    if(list.size() == 3 && !alreadyInAllSets(list))
+                    if(list.size() == 3)
                     {
-                        allSets.add(list);
+                        /*
+                        System.out.println();
+                        for(ArrayList<SetCard> set : allSets)
+                        {
+                            for(SetCard card2 : set)
+                            {
+                                System.out.println(card2 + " ");
+                            }
+                            System.out.println();
+                        }
+
+                        System.out.println("set " + list);
+                        System.out.println("alreadinsert " + alreadyInAllSets(list));
+                        */
+                        if(!alreadyInAllSets(list))
+                        {
+                            allSets.add(list);
+                        }
 
                         return;
                     }
+
                     getAllPossibleSets(list, cards);
                 }
             }
@@ -49,10 +85,8 @@ class SetSolver
     {
         for(ArrayList<SetCard> foundSet : allSets)
         {
-            if(foundSet.containsAll(set))
-            {
-                return true;
-            }
+            //System.out.println(foundSet.containsAll(set));
+            return foundSet.containsAll(set);
         }
 
         return false;
@@ -60,9 +94,10 @@ class SetSolver
 
     private boolean shouldBeAddedToSet(ArrayList<SetCard> cards, SetCard newCard)
     {
-        boolean[] properties = new boolean[4];
+        HashMap<String, Boolean> properties = new HashMap<>();
 
-        Arrays.fill(properties, true);
+        for(Map.Entry<String, String> e : newCard.dimensionValue.entrySet())
+            properties.put(e.getValue(), false);
 
         SetCard previousCard = null;
 
@@ -74,43 +109,21 @@ class SetSolver
                     previousCard = card;
                 else
                 {
-                    if (card.color != previousCard.color)
-                        properties[0] = false;
-                    if (card.symbol != previousCard.symbol)
-                        properties[1] = false;
-                    if (card.shading != previousCard.shading)
-                        properties[2] = false;
-                    if (card.number != previousCard.number)
-                        properties[3] = false;
+                    for(Map.Entry<String, String> e : newCard.dimensionValue.entrySet())
+                    {
+                        properties.put(e.getKey(), card.dimensionValue.get(e.getKey()).equals(e.getValue()));
+                    }
                 }
             }
 
-            boolean colorValid = false;
-            boolean symbolValid = false;
-            boolean shadingValid = false;
-            boolean numberValid = false;
-
-            if((properties[0] && cards.get(0).color == newCard.color&& cards.get(1).color == newCard.color)
-                    || (!properties[0] && cards.get(0).color != newCard.color&& cards.get(1).color != newCard.color))
-                colorValid = true;
-            if((properties[1] && cards.get(0).symbol == newCard.symbol && cards.get(1).symbol == newCard.symbol)
-                    || (!properties[1] && cards.get(0).symbol != newCard.symbol && cards.get(1).symbol != newCard.symbol))
-                symbolValid = true;
-            if((properties[2] && cards.get(0).shading == newCard.shading && cards.get(1).shading == newCard.shading)
-                    || (!properties[2] && cards.get(0).shading != newCard.shading && cards.get(1).shading != newCard.shading))
-                shadingValid = true;
-            if((properties[3]  && cards.get(0).number == newCard.number&& cards.get(1).number == newCard.number)
-                    || (!properties[3] && cards.get(0).number != newCard.number && cards.get(1).number != newCard.number))
-                numberValid = true;
-
-            if(colorValid && symbolValid && shadingValid && numberValid)
-                return true;
-        }
-        else
-        {
-            return true;
+            for(Map.Entry<String, String> e : newCard.dimensionValue.entrySet())
+            {
+                if(properties.get(e.getKey()) && (!cards.get(0).equals(e.getValue()) || !cards.get(1).equals(e.getValue()))
+                        && !properties.get(e.getKey()) && (cards.get(0).equals(e.getValue()) || cards.get(1).equals(e.getKey())))
+                    return false;
+            }
         }
 
-        return false;
+        return true;
     }
 }
