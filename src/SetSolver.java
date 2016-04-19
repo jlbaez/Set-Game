@@ -7,6 +7,7 @@ import java.util.*;
 class SetSolver
 {
     private ArrayList<ArrayList<SetCard>> allSets;
+    private final int sizeOfSet;
 
     class ImproperDimensionException extends Exception
     {
@@ -16,10 +17,13 @@ class SetSolver
         }
     }
 
-    ArrayList<ArrayList<SetCard>> getAllPossibleSets(ArrayList<SetCard> cards, HashMap<String, String[]> dim) throws ImproperDimensionException
+    SetSolver(int sizeOfSet)
     {
-        HashMap<String, String[]> dimensions = dim;
+        this.sizeOfSet = sizeOfSet;
+    }
 
+    ArrayList<ArrayList<SetCard>> getAllPossibleSets(ArrayList<SetCard> cards, HashMap<String, String[]> dimensions) throws ImproperDimensionException
+    {
         for(Map.Entry<String, String[]> e : dimensions.entrySet())
         {
             for(SetCard card : cards)
@@ -31,7 +35,7 @@ class SetSolver
                 else
                 {
                     if(!Arrays.asList(e.getValue()).contains(card.dimensionValue.get(e.getKey())))
-                        throw new ImproperDimensionException(card.dimensionValue.get(e.getKey()) + " is not a propery value in " + e.getKey());
+                        throw new ImproperDimensionException(card.dimensionValue.get(e.getKey()) + " is not a property value in " + e.getKey());
                 }
             }
         }
@@ -62,7 +66,7 @@ class SetSolver
                     ArrayList<SetCard> list = new ArrayList<>(inputSets);
                     list.add(card);
 
-                    if(list.size() == 3)
+                    if(list.size() == sizeOfSet)
                     {
                         if(!alreadyInAllSets(list))
                         {
@@ -90,14 +94,14 @@ class SetSolver
                     i++;
             }
 
-            if(i==3)
+            if(i==sizeOfSet)
                 return true;
         }
 
         return false;
     }
 
-    public boolean shouldBeAddedToSet(ArrayList<SetCard> cards, SetCard newCard)
+    private boolean shouldBeAddedToSet(ArrayList<SetCard> cards, SetCard newCard)
     {
         HashMap<String, Boolean> properties = new HashMap<>();
 
@@ -123,13 +127,14 @@ class SetSolver
 
             for(Map.Entry<String, String> e : newCard.dimensionValue.entrySet())
             {
-                boolean b1 = cards.get(0).dimensionValue.get(e.getKey()).equals(e.getValue());
-                boolean b2 = cards.get(1).dimensionValue.get(e.getKey()).equals(e.getValue());
-
-                if(properties.get(e.getKey()) && (!b1 || !b2))
-                    return false;
-                if(!properties.get(e.getKey()) && (b1 || b2))
-                    return false;
+                for(SetCard s : cards)
+                {
+                    boolean b = s.dimensionValue.get(e.getKey()).equals(e.getValue());
+                    if(properties.get(e.getKey()) && !b)
+                        return false;
+                    if(!properties.get(e.getKey()) && b)
+                        return false;
+                }
             }
         }
 

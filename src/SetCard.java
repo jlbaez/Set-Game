@@ -20,18 +20,6 @@ class SetCard
            this.dimensionValue.put(dimension[0], dimension[1]);
     }
 
-    public int numberOfSameProperties(SetCard s)
-    {
-        int numberOfSame = 0;
-        for(Map.Entry<String, String> dimension : dimensionValue.entrySet())
-        {
-            if(s.dimensionValue.get(dimension.getKey()).equals(dimension.getValue()))
-                numberOfSame++;
-        }
-
-        return numberOfSame;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

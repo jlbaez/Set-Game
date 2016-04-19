@@ -9,7 +9,7 @@ public class SetSolverRun {
     public static void main(String[] args)
     {
         ArrayList<SetCard> input = new ArrayList<>();
-        SetSolver s = new SetSolver();
+        SetSolver s = new SetSolver(4);
         HashMap<String, String[]> dimensions = new HashMap<>();
 
         dimensions.put("color", new String[]{"red", "green", "purple", "blue"});
@@ -38,6 +38,13 @@ public class SetSolverRun {
         s3.addDimension(new String[]{"shading", "solid"});
         s3.addDimension(new String[]{"number", "one"});
         s3.addDimension(new String[]{"direction", "east"});
+
+        SetCard s32 = new SetCard();
+        s32.addDimension(new String[]{"color", "red"});
+        s32.addDimension(new String[]{"symbol", "triangle"});
+        s32.addDimension(new String[]{"shading", "solid"});
+        s32.addDimension(new String[]{"number", "one"});
+        s32.addDimension(new String[]{"direction", "west"});
 
         SetCard s4 = new SetCard();
         s4.addDimension(new String[]{"color", "purple"});
@@ -86,6 +93,7 @@ public class SetSolverRun {
         input.add(s1);
         input.add(s2);
         input.add(s3);
+        input.add(s32);
         input.add(s4);
         input.add(s5);
         input.add(s6);
