@@ -3,7 +3,7 @@ import java.util.Map;
 
 /**
  * Created by jose on 4/17/16.
- * Last edited on 4/17/16
+ * Last edited on 4/18/16
  */
 class SetCard
 {

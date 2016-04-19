@@ -1,29 +1,41 @@
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by jose on 4/17/16.
- * Last edited on 4/17/16
+ * Last edited on 4/18/16
  */
-public class SetSolver
+class SetSolver
 {
     private ArrayList<ArrayList<SetCard>> allSets;
-    private HashMap<String, String[]> dimensions;
 
-    class ImproperDimensionValueException extends Exception
+    class ImproperDimensionException extends Exception
     {
-        ImproperDimensionValueException(String message)
+        ImproperDimensionException(String message)
         {
             super(message);
         }
     }
 
-    ArrayList<ArrayList<SetCard>> getAllPossibleSets(ArrayList<SetCard> cards, HashMap<String, String[]> dimensions)
+    ArrayList<ArrayList<SetCard>> getAllPossibleSets(ArrayList<SetCard> cards, HashMap<String, String[]> dim) throws ImproperDimensionException
     {
-        this.dimensions = dimensions;
+        HashMap<String, String[]> dimensions = dim;
+
+        for(Map.Entry<String, String[]> e : dimensions.entrySet())
+        {
+            for(SetCard card : cards)
+            {
+                if(!card.dimensionValue.containsKey(e.getKey()))
+                {
+                    throw new ImproperDimensionException(card + " is missing dimension: " + e.getKey());
+                }
+                else
+                {
+                    if(!Arrays.asList(e.getValue()).contains(card.dimensionValue.get(e.getKey())))
+                        throw new ImproperDimensionException(card.dimensionValue.get(e.getKey()) + " is not a propery value in " + e.getKey());
+                }
+            }
+        }
+
         return getAllPossibleSets(cards);
     }
 
