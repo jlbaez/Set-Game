@@ -76,7 +76,7 @@ public class SetSolverRun {
         s9.addDimension(new String[]{"color", "green"});
         s9.addDimension(new String[]{"symbol", "diamond"});
         s9.addDimension(new String[]{"shading", "outlined"});
-        s9.addDimension(new String[]{"number", "four"});
+        s9.addDimension(new String[]{"number", "three"});
 
 
         input.add(s1);
