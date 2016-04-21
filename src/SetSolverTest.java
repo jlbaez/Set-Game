@@ -5,8 +5,9 @@ import org.junit.rules.ExpectedException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 /**
  * Created by jose on 4/18/16.
  * Last edited on 4/18/16
@@ -129,9 +130,9 @@ public class SetSolverTest
         inputOfTest1.add(c9);
 
         expectResults1.add(l1);
-        expectResults1.add(l4);
         expectResults1.add(l2);
         expectResults1.add(l3);
+        expectResults1.add(l4);
     }
 
     @Before
@@ -499,19 +500,22 @@ public class SetSolverTest
     @Test
     public void assetCorrectSetsTask1() throws SetSolver.ImproperDimensionException
     {
-        assertEquals("checking set of 3", expectResults1, s1.getAllPossibleSets(inputOfTest1, dimensions1));
+        ArrayList<ArrayList<SetCard>> r = s1.getAllPossibleSets(inputOfTest1, dimensions1);
+        assertTrue(r.size() == expectResults1.size() && new HashSet(r).equals(new HashSet(expectResults1)));
     }
 
     @Test
     public void assetCorrectSetsTask2() throws SetSolver.ImproperDimensionException
     {
-        assertEquals("checking set of 3", expectResults2, s1.getAllPossibleSets(inputOfTest2, dimensions2));
+        ArrayList<ArrayList<SetCard>> r = s1.getAllPossibleSets(inputOfTest2, dimensions2);
+        assertTrue(r.size() == expectResults2.size() && new HashSet(r).equals(new HashSet(expectResults2)));
     }
 
     @Test
     public void assetCorrectSetsTask3() throws SetSolver.ImproperDimensionException
     {
-        assertEquals("checking set of 4", expectResults3, s2.getAllPossibleSets(inputOfTest3, dimensions3));
+        ArrayList<ArrayList<SetCard>> r = s2.getAllPossibleSets(inputOfTest3, dimensions3);
+        assertTrue(r.size() == expectResults3.size() && new HashSet(r).equals(new HashSet(expectResults3)));
     }
 
     @Test
