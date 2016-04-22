@@ -5,8 +5,10 @@ import java.util.Map;
  * Created by jose on 4/17/16.
  * Last edited on 4/18/16
  */
+//class to represent cards in set game
 class SetCard
 {
+    //contains all the demensions a card can have
     HashMap<String, String> dimensionValue;
 
     SetCard()
